@@ -13,11 +13,10 @@ class docker::install {
   case $::osfamily {
     'Debian': {
 
-      ensure_packages(['apt-transport-https', 'cgroup-lite'])
+      ensure_packages(['cgroup-lite'])
       Package['apt-transport-https'] -> Package['docker']
 
       if ($docker::use_upstream_package_source) {
-        include apt
         apt::source { 'docker':
           location          => $docker::package_source_location,
           release           => 'docker',
