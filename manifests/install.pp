@@ -12,7 +12,6 @@ class docker::install {
 
 $prerequired_packages = $::operatingsystem ? {
   'Debian' => ['apt-transport-https', 'cgroupfs-mount'],
-  'Ubuntu' => ['cgroup-lite'],
   default  => '',
 }
 
@@ -20,7 +19,6 @@ $prerequired_packages = $::operatingsystem ? {
     'Debian': {
 
       ensure_packages($prerequired_packages)
-      Package['apt-transport-https'] -> Package['docker']
 
       if ($docker::use_upstream_package_source) {
 
