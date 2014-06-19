@@ -18,7 +18,9 @@ $prerequired_packages = $::operatingsystem ? {
   case $::osfamily {
     'Debian': {
 
-      ensure_packages($prerequired_packages)
+      if $::operatingsystem == 'Debian' {
+        ensure_packages($prerequired_packages)
+      }
 
       if ($docker::use_upstream_package_source) {
 
