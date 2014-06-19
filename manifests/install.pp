@@ -12,7 +12,7 @@ class docker::install {
 
 $prerequired_packages = $::operatingsystem ? {
   'Debian' => ['apt-transport-https', 'cgroupfs-mount'],
-  default  => '',
+  default  => [''],
 }
 
   case $::osfamily {
