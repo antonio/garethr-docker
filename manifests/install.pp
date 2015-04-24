@@ -10,16 +10,22 @@ class docker::install {
   validate_string($::kernelrelease)
   validate_bool($docker::use_upstream_package_source)
 
-  ensure_packages($docker::prerequired_packages)
+$prerequired_packages = $::operatingsystem ? {
+  'Debian' => ['apt-transport-https', 'cgroupfs-mount'],
+  default  => [''],
+}
 
   case $::osfamily {
     'Debian': {
-      if $docker::manage_package {
-        Package['apt-transport-https'] -> Package['docker']
-      }
 
       if ($docker::use_upstream_package_source) {
-        include apt
+
+        if $docker::version {
+          $dockerpackage = "lxc-docker-${docker::version}"
+        } else {
+          $dockerpackage = 'lxc-docker'
+        }
+
         apt::source { 'docker':
           location          => $docker::package_source_location,
           release           => 'docker',
